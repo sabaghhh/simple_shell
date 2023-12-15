@@ -1,43 +1,65 @@
 #include "shell.h"
+/**
+ * runCommandsFromFile - executes commands from a file.
+ * @filePath: path to the file containing commands.
+ * Return: Nothing.
+ */
+void runCommandsFromFile(char *filePath)
+{
+	FILE *file;
+	char **arguments, *commandLine = NULL;
+	size_t bytesRead, bufferSize = 0;
+
+	file = fopen(filePath, "r");
+	if (!file)
+	{
+		perror("Error: Unable to open the specified file");
+		exit(EXIT_FAILURE);
+	}
+
+	while ((bytesRead = getline(&commandLine, &bufferSize, file)) != -1)
+	{
+		commandLine[strcspn(commandLine, "\n")] = '\0';
+		arguments = _split_line(commandLine);
+		_execute_line(arguments);
+		free(arguments);
+	}
+free(commandLine);
+fclose(file);
+}
 
 /**
- * main - Entry point
- * @argc: argument count
- * @argv: argument variable
- * Return: 0 if successful
+ * main - simple shell.
+ * @argc: number of arguments passed.
+ * @argv: arguments passed.
+ * Return: 0 on success.
  */
-int main(int argc, char *argv[])
+int main(int argc, char **argv)
 {
-	int input_fd = STDIN_FILENO;
-	int interactive = isatty(STDIN_FILENO);
-	int linecount = 1;
+	char *line;
+	int value = -1;
 
 	if (argc > 1)
 	{
-		interactive = 0;
-		input_fd = open(argv[1], O_RDONLY);
-		if (input_fd == -1)
-		{
-			if (errno == EACCES)
-				perror("File Permission denied");
-			else
-				perror("File not found");
-			exit(EXIT_FAILURE);
-		}
+		runCommandsFromFile(argv[1]);
+		return (0);
 	}
 
-	while (true)
+	if (isatty(STDIN_FILENO) == 1)
 	{
-		compute_input(interactive, input_fd, argc, argv, linecount);
-		if (input_fd != 0)
+		while (value == -1)
 		{
-			close(input_fd);
-			break;
+			display_prompt();
+			line = _read_line();
+			argv = _split_line(line);
+			value = _is_builtin(argv);
+			free(line);
+			free(argv);
+			if (value >= 0)
+				exit(value);
 		}
-
-		linecount++;
 	}
-
-
+	else
+		_non_interactive();
 	return (0);
 }
