@@ -1,3 +1,4 @@
+#include "shell.h"
 /**
  * _my_exit - exits the shell.
  * @argv: array of arguments.
