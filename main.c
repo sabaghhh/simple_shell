@@ -8,7 +8,8 @@ void runCommandsFromFile(char *filePath)
 {
 	FILE *file;
 	char **arguments, *commandLine = NULL;
-	size_t bytesRead, bufferSize = 0;
+	int bytesRead;
+	size_t bufferSize = 0;
 
 	file = fopen(filePath, "r");
 	if (!file)

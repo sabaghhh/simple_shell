@@ -60,7 +60,7 @@ return (newBuffer);
 }
 
 if (newSize == prevSize)
-return (existingB);
+return (existing);
 
 if (newSize == 0 && existing)
 {

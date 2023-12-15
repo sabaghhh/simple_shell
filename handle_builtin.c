@@ -10,7 +10,7 @@ int _my_exit(char **argv)
 
 	if (argv[1])
 	{
-		value = _atoi(argv[1]);
+		value = custom_atoi(argv[1]);
 		if (value == -1)
 		{
 			perror("Error: Incorrect exit status\n");

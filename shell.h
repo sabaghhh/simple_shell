@@ -7,6 +7,7 @@
 #include <string.h>
 #include <sys/wait.h>
 
+extern char **environ;
 char display_prompt(void);
 void free_argv(char **argv);
 int custom_atoi(char *str);
