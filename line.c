@@ -61,7 +61,7 @@ return (newBuffer);
 }
 
 if (newSize == prevSize)
-return (existingB);
+return (existing);
 
 if (newSize == 0 && existing)
 {
@@ -99,7 +99,7 @@ return (newBuffer);
  */
 ssize_t _get_line(char **outputString, size_t *outputSize, FILE *inputFile)
 {
-ssize_t returnValue;
+ssize_t retValue;
 static ssize_t callCount;
 char *lineBuffer, currentChar = 'x';
 int readResult = 1;
@@ -132,11 +132,11 @@ lineBuffer = allocateM(lineBuffer, callCount, callCount + 1);
 callCount++;
 }
 lineBuffer[callCount] = '\0';
-_Buff(outputString, lineBuffer, outputSize, callCount)
-return (Value = callCount);
+_Buff(outputString, lineBuffer, outputSize, callCount);
+retValue = callCount;
 if (readResult != 0)
 callCount = 0;
-return (returnValue);
+return (retValue);
 }
 
 /**
